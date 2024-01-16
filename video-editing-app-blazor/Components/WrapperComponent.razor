@@ -1,0 +1,15 @@
+﻿<!-- WrapperComponent.razor -->
+<div style="display: none;">
+    <!-- Pass the value down to the child using a cascading parameter -->
+    <CascadingValue Name="ValueToPass" Value="@ValueToPass">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string ValueToPass { get; set; }
+}

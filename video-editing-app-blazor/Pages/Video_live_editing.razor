@@ -1,0 +1,76 @@
+﻿@page "/Video_live_editing"
+@inject IJSRuntime JSRuntime
+@namespace Video_EditorApp_Project.Pages
+@using Microsoft.AspNetCore.Components.Forms;
+
+<div>
+    <label for="videoFile">Video file:</label>
+    <InputFile id="videoFile" OnChange="async (e) => await LoadVideoFile(e)" accept=".mp4, .avi, .mov, .mkv, .flv" />
+</div>
+
+<div class="video-editor">
+    <!-- Video Preview -->
+    <div class="video-preview">
+        <video id="videoPlayer" controls>
+            <source src="@videoInputUrl" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+        <div class="timeline-content">
+            <!-- Individual timeline segments representing video parts -->
+            <div class="timeline-segment" style="width: 10%;"></div>
+            <div class="timeline-segment" style="width: 20%;"></div>
+            <div class="timeline-segment" style="width: 15%;"></div>
+            <!-- Add more segments as needed -->
+        </div>
+    </div>
+
+    <!-- Control Buttons -->
+    <div class="control-buttons">
+        <button @onclick="PlayOrPause">Play/Pause</button>
+        <button @onclick="Rewind">Rewind</button>
+    </div>
+</div>
+
+@code {
+    private bool isPlaying = false;
+    private string videoInputUrl;
+
+    private async Task PlayOrPause()
+    {
+        if (isPlaying)
+        {
+            // Call JavaScript function to pause video using JSRuntime
+            await JSRuntime.InvokeVoidAsync("pauseVideo");
+        }
+        else
+        {
+            // Call JavaScript function to play video using JSRuntime
+            await JSRuntime.InvokeVoidAsync("playVideo");
+        }
+        isPlaying = !isPlaying;
+    }
+
+    private async Task Rewind()
+    {
+        // Call JavaScript function to rewind video using JSRuntime
+        await JSRuntime.InvokeVoidAsync("rewindVideo");
+    }
+
+    private async Task LoadVideoFile(InputFileChangeEventArgs e)
+    {
+        var file = e.GetMultipleFiles().FirstOrDefault();
+        if (file != null)
+        {
+            var buffer = new byte[file.Size];
+            await file.OpenReadStream().ReadAsync(buffer);
+            videoInputUrl = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+
+            // Call JavaScript function to process the uploaded video using FFmpeg
+            await JSRuntime.InvokeVoidAsync("processVideo", videoInputUrl);
+        }
+    }
+}

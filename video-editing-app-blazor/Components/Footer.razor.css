@@ -1,0 +1,48 @@
+﻿body {
+    background-color: #f0f0f0;
+}
+
+/* Custom CSS for the footer */
+.footer {
+    background: linear-gradient(90deg, #3498db, #33d8b3); /* Gradient background */
+    color: #fff;
+    padding: 30px 0;
+}
+
+    .footer h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .footer p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .footer a {
+        color: #fff;
+    }
+
+    .footer ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .footer ul li {
+            margin-bottom: 10px;
+        }
+
+    .footer .social-icons {
+        font-size: 24px;
+    }
+
+        .footer .social-icons a {
+            margin: 0 10px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+            .footer .social-icons a:hover {
+                color: #33d8b3;
+            }

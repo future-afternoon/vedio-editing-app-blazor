@@ -1,0 +1,70 @@
+﻿<!-- Pages/ConvertPdfToImage.razor -->
+@page "/pdf"
+
+<h3>PDF to Image Converter</h3>
+
+<!-- Change input type to file and allow multiple file selection -->
+<input type="file" @onchange="HandleFileInput" accept=".pdf" multiple />
+<button @onclick="ConvertToImages">Convert to Images</button>
+
+@if (imagePaths != null && imagePaths.Any())
+{
+    <h4>Converted Images:</h4>
+    @foreach (var imagePath in imagePaths)
+    {
+        <img src="@imagePath" alt="Converted Image" class="converted-image" />
+    }
+}
+
+@code {
+    private List<string> imagePaths;
+
+    private void HandleFileInput(InputFileChangeEventArgs e)
+    {
+        // Clear existing image paths
+        imagePaths = new List<string>();
+
+        foreach (var file in e.GetMultipleFiles())
+        {
+            var stream = file.OpenReadStream();
+            var document = PdfSharp.Pdf.IO.PdfReader.Open(stream);
+
+            // Convert each page to image and save to a temporary path
+            for (int pageNumber = 0; pageNumber < document.Pages.Count; pageNumber++)
+            {
+                var page = document.Pages[pageNumber];
+                var image = ConvertPdfPageToImage(page);
+
+                var imagePath = $"converted_page_{pageNumber + 1}.png";
+                image.Save(imagePath);
+                imagePaths.Add(imagePath);
+            }
+        }
+    }
+
+    private SixLabors.ImageSharp.Image ConvertPdfPageToImage(PdfSharp.Pdf.PdfPage page)
+    {
+        var image = new SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Rgba32>((int)page.Width, (int)page.Height);
+
+        using (var graphics = SixLabors.ImageSharp.Processing.ImageExtensions.GetGraphics(image))
+        {
+            graphics.DrawImage(ConvertPdfSharpImage(page), 1f);
+        }
+
+        return image;
+    }
+
+    private PdfSharp.Drawing.XImage ConvertPdfSharpImage(PdfSharp.Pdf.PdfPage page)
+    {
+        using (var memoryStream = new System.IO.MemoryStream())
+        {
+            page.ConvertToImage().Save(memoryStream, PdfSharp.Pdf.PdfDocumentImageFormat.Png);
+            return PdfSharp.Drawing.XImage.FromStream(memoryStream);
+        }
+    }
+
+    private void ConvertToImages()
+    {
+        // Conversion logic is handled in HandleFileInput
+    }
+}

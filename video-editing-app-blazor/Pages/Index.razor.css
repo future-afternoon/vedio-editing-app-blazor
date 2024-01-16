@@ -1,0 +1,68 @@
+﻿
+.text-white::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px; /* You can adjust the height of the line as needed */
+    background-color: white; /* Set the color of the line to white */
+    margin: 0 auto;
+}
+
+.svg-container {
+    width: 100%;
+    height: 550px;
+}
+
+.gradient-rect {
+    width: 100%;
+    height: 550px;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(227, 132, 236, 1) 0%, rgba(193, 144, 239, 1) 11%, rgba(0, 212, 255, 1) 100%);
+}
+
+.body_text_center {
+    display: flex;
+    justify-content: center;
+}
+
+.container-1 {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.container-2 {
+    background-image: url('/wwwroot/Images/wave-image.jpg');
+}
+
+.container-2 {
+    display: flex;
+    justify-content: center;
+}
+
+
+.item-5 {
+    margin-left: 25%;
+}
+
+.container-3 {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.btn.btn-outline-warning {
+    background-color: #ffc233;
+    border-color: #ffc233;
+    color: #fff; /* Text color when not hovering */
+}
+
+    .btn.btn-outline-warning:hover {
+        background-color: #fff; /* Background color when hovering */
+        border-color: #ffc233;
+        color: #ffc233; /* Text color when hovering */
+    }
+
+
+
+
+
+

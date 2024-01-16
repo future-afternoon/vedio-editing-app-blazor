@@ -1,0 +1,12 @@
+﻿@page "/childpage"
+
+<h3>Child Page</h3>
+
+<!-- Display the received string value from the cascading parameter -->
+<p>Received value: @ValueToDisplay</p>
+
+@code {
+    // Declare a property to receive the string value as a cascading parameter
+    [CascadingParameter(Name = "ValueToPass")]
+    public string ValueToDisplay { get; set; }
+}
